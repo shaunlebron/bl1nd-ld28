@@ -8,6 +8,8 @@ Blind.assets = (function(){
 	};
 
 	var imageSources = {
+		"eye": "img/eye.png",
+		"title": "img/title.png",
 	};
 
 	var jsonSources = {
@@ -125,29 +127,22 @@ Blind.assets = (function(){
 				continue;
 			}
 			src = jsonSources[name];
-			if (usePreloadedJson) {
-				json[name] = Blind.jsonData[src];
-				console.log("pre-loaded json: "+ name);
-				handleLoad();
-			}
-			else {
-				req = new XMLHttpRequest();
-				req.onload = (function(name){
-					return function() {
-						try {
-							json[name] = JSON.parse(this.responseText);
-							console.log("loaded json: "+ name);
-							handleLoad();
-						}
-						catch (e) {
-							console.log("ERROR: could not load json file",name);
-							console.error("could not load json file",name);
-						}
-					};
-				})(name);
-				req.open('GET', src, true);
-				req.send();
-			}
+			req = new XMLHttpRequest();
+			req.onload = (function(name){
+				return function() {
+					try {
+						json[name] = JSON.parse(this.responseText);
+						console.log("loaded json: "+ name);
+						handleLoad();
+					}
+					catch (e) {
+						console.log("ERROR: could not load json file",name);
+						console.error("could not load json file",name);
+					}
+				};
+			})(name);
+			req.open('GET', src, true);
+			req.send();
 		}
 
 		// load sound effects
