@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
+<style>
+body {
+	background: #222;
+	margin: 0;
+	padding: 0;
+}
+div#container {
+	margin:auto;
+	width:720px;
+}
+canvas#c {
+	display: block;
+}
+</style>
+</head>
+<body>
+
+<div id="container">
+
+<input style="display:none" type="file" id="open-file" />
+<div class="btn-toolbar" id="toolbar">
+	<div class="btn-group">
+		<button
+			class="btn dropdown-toggle" data-toggle="dropdown">
+			File <span class="caret"></span>
+			</button>
+
+		<ul class="dropdown-menu">
+			<li>
+				<a
+					onclick="Blind.Mapper.loader.promptReset()"
+					href="#"
+					>New</a>
+			</li>
+			<li>
+				<a
+					onclick="$('#open-file').click()"
+					href="#"
+					>Open</a>
+			</li>
+			<li>
+				<a
+					id="save-button"
+					href="#"
+					>Save</a>
+			</li>
+		</ul>
+	</div>
+	<div class="btn-group">
+		<button
+			class="btn"
+			onclick="Blind.Mapper.model.addBox()"
+			><i class="icon-plus-sign"></i></button>
+		<button
+			class="btn"
+			onclick="Blind.Mapper.model.removeBox()"
+			><i class="icon-minus-sign"></i></button>
+		<button
+			class="btn"
+			onclick="Blind.Mapper.model.duplicateBox()"
+			><i class="icon-asterisk"></i></button>
+	</div>
+	<div class="btn-group">
+		<button
+			onclick="Blind.Mapper.model.colorBox()"
+			class="btn"
+			>Color</button>
+	</div>
+	<div class="btn-group">
+		<button
+			onclick="Blind.Mapper.model.renameBox()"
+			class="btn"
+			><i class="icon-tag"></i> <span id="objectName"></span></button>
+	</div>
+</div>
+<canvas id='c'></canvas>
+
+</div>
+<script src="lib/jquery/jquery-1.9.1.min.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/requestAnimationFrame.js"></script>
+<script src="lib/bootbox.min.js"></script>
+
+<script src="src/blind.js"></script>
+<script src="src/interp.js"></script>
+<script src="src/assets.js"></script>
+<script src="src/executive.js"></script>
+<script src="src/font.js"></script>
+<script src="src/path.js"></script>
+<script src="src/scene_title.js"></script>
+<script src="src/vector.js"></script>
+<script src="src/time.js"></script>
+<script src="src/audio.js"></script>
+<script src="src/timed_script.js"></script>
+
+<script src="src/map.js"></script>
+<script src="src/player.js"></script>
+
+<script src="src/input.js"></script>
+<script src="src/mapper/main.js"></script>
+<script src="src/mapper/scene.js"></script>
+<script src="src/mapper/model.js"></script>
+</body>
+</html>

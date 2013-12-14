@@ -1,0 +1,4 @@
+
+Blind.Player = function() {
+	
+};
