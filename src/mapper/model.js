@@ -28,17 +28,29 @@ Blind.Mapper.model = (function(){
 	// STATE SET & GET
 
 	function setBoxStates(states) {
+		clearBoxes();
+		var i,len=states.length;
+		for (i=0; i<len; i++) {
+			boxes.push(new Blind.Box(states[i]));
+		}
 	}
 
 	function getBoxStates() {
-	}
-
-	function setBoxes(_boxes) {
-		boxes = _boxes;
-	}
-	
-	function getBoxes() {
-		return boxes;
+		var states = [];
+		var i,len=boxes.length;
+		var b;
+		for (i=0; i<len; i++) {
+			b = boxes[i];
+			states.push({
+				x: b.x,
+				y: b.y,
+				w: b.w,
+				h: b.h,
+				color: b.color,
+				name: b.name,
+			});
+		}
+		return states;
 	}
 
 	// INTERFACE FUNCTIONS
@@ -46,12 +58,14 @@ Blind.Mapper.model = (function(){
 	function addBox() {
 		boxes.push(new Blind.Box({x:0, y:0, w:50, h:50, color:"#00F"}));
 		selectIndex(boxes.length-1);
+		Blind.Mapper.loader.backup();
 	}
 
 	function removeBox() {
 		if (selectedIndex != null) {
 			boxes.splice(selectedIndex, 1);
 			selectIndex(null);
+			Blind.Mapper.loader.backup();
 		}
 	}
 
@@ -61,8 +75,10 @@ Blind.Mapper.model = (function(){
 			var b2 = new Blind.Box(b);
 			b2.x = 0;
 			b2.y = 0;
+			b2.name = "";
 			boxes.push(b2);
 			selectIndex(boxes.length-1);
+			Blind.Mapper.loader.backup();
 		}
 	}
 
@@ -73,6 +89,7 @@ Blind.Mapper.model = (function(){
 				if (result != null) {
 					box.name = result;
 					refreshNameDisplay();
+					Blind.Mapper.loader.backup();
 				}
 			}, box.name || "");
 		}
@@ -84,6 +101,7 @@ Blind.Mapper.model = (function(){
 			bootbox.prompt("Change box color:", "Cancel", "OK", function(result) {
 				if (result != null) {
 					box.color = result;
+					Blind.Mapper.loader.backup();
 				}
 			}, box.color || "");
 		}
@@ -155,9 +173,11 @@ Blind.Mapper.model = (function(){
 			},
 			end: function(x,y) {
 				moveFunc = null;
+				Blind.Mapper.loader.backup();
 			},
 			cancel: function(x,y) {
 				this.end(x,y);
+				Blind.Mapper.loader.backup();
 			},
 		};
 	})();
@@ -194,7 +214,8 @@ Blind.Mapper.model = (function(){
 		duplicateBox: duplicateBox,
 		renameBox: renameBox,
 		colorBox: colorBox,
-		setBoxes: setBoxes,
-		getBoxes: getBoxes,
+		clearBoxes: clearBoxes,
+		setBoxStates: setBoxStates,
+		getBoxStates: getBoxStates,
 	};
 })();

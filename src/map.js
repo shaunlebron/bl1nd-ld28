@@ -2,6 +2,7 @@ Blind.Box = function(dict) {
 	this.x = dict.x;
 	this.y = dict.y;
 	this.color = dict.color;
+	this.name = dict.name || "";
 	this.w = dict.w;
 	this.h = dict.h;
 };
