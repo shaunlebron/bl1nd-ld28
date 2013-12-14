@@ -198,7 +198,7 @@ Blind.Mapper.model = (function(){
 		for (i=0; i<len; i++) {
 			b = boxes[i];
 			if (i == selectedIndex) {
-				ctx.strokeStyle = "#F00";
+				ctx.strokeStyle = "#FFF";
 				ctx.lineWidth = 4;
 				ctx.strokeRect(b.x, b.y, b.w, b.h);
 			}
