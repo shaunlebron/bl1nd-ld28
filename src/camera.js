@@ -12,6 +12,38 @@ Blind.camera = (function(){
 	var moveSpeed = 50;
 	var angleSpeed = Math.PI;
 
+	var collide = (function(){
+
+		var alphaDriver = new Blind.InterpDriver(
+			Blind.makeInterp('linear', [1,0], [0,0.25]),
+			{
+				freezeAtEnd: true,
+			});
+
+		function init() {
+			alphaDriver.skipToEnd();
+		}
+
+		function trigger() {
+			alphaDriver.reset();
+		}
+
+		function update(dt) {
+			alphaDriver.step(dt);
+		}
+
+		function getValue() {
+			return alphaDriver.val;
+		}
+
+		return {
+			init: init,
+			trigger: trigger,
+			update: update,
+			getValue: getValue,
+		};
+	})();
+
 	var push = (function(){
 		var value=0, target=0;
 		var offset = 10;
@@ -102,6 +134,7 @@ Blind.camera = (function(){
 
 	function init(_map) {
 		map = _map;
+		collide.init();
 		updateProjection();
 	}
 
@@ -190,6 +223,74 @@ Blind.camera = (function(){
 	function enableProjKeys()  { Blind.input.addKeyHandler(    projKeyHandler); }
 	function disableProjKeys() { Blind.input.removeKeyHandler( projKeyHandler); }
 
+	// ========================== COLLISION FUNCTIONS  =============================
+
+	function collideX(dx) {
+		if (dx == 0) {
+			return x;
+		}
+		var boxes = map.boxes;
+		var i,len = boxes.length;
+		var b;
+		var boundX;
+		if (dx < 0) {
+			for (i=0; i<len; i++) {
+				b = boxes[i];
+				boundX = b.x+b.w;
+				if (b.y <= y && y <= b.y+b.h &&
+					boundX <= x && x+dx <= boundX) {
+					collide.trigger();
+					return boundX;
+				}
+			}
+		}
+		else {
+			for (i=0; i<len; i++) {
+				b = boxes[i];
+				boundX = b.x;
+				if (b.y <= y && y <= b.y+b.h &&
+					x <= boundX && boundX <= x+dx) {
+					collide.trigger();
+					return boundX;
+				}
+			}
+		}
+		return x+dx;
+	}
+
+	function collideY(dy) {
+		if (dy == 0) {
+			return y;
+		}
+		var boxes = map.boxes;
+		var i,len = boxes.length;
+		var b;
+		var boundY;
+		if (dy < 0) {
+			for (i=0; i<len; i++) {
+				b = boxes[i];
+				boundY = b.y+b.h;
+				if (b.x <= x && x <= b.x+b.w &&
+					boundY <= y && y+dy <= boundY) {
+					collide.trigger();
+					return boundY;
+				}
+			}
+		}
+		else {
+			for (i=0; i<len; i++) {
+				b = boxes[i];
+				boundY = b.y;
+				if (b.x <= x && x <= b.x+b.w &&
+					y <= boundY && boundY <= y+dy) {
+					collide.trigger();
+					return boundY;
+				}
+			}
+		}
+		return y+dy;
+	}
+
 	// ========================== MAIN FUNCTIONS  =============================
 
 	function update(dt) {
@@ -200,12 +301,12 @@ Blind.camera = (function(){
 			angle += angleSpeed*dt;
 		}
 		if (controls["moveUp"]) {
-			x += Math.cos(angle)*moveSpeed*dt;
-			y += Math.sin(angle)*moveSpeed*dt;
+			x = collideX(Math.cos(angle)*moveSpeed*dt);
+			y = collideY(Math.sin(angle)*moveSpeed*dt);
 		}
 		if (controls["moveDown"]) {
-			x -= Math.cos(angle)*moveSpeed*dt;
-			y -= Math.sin(angle)*moveSpeed*dt;
+			x = collideX(-Math.cos(angle)*moveSpeed*dt);
+			y = collideY(-Math.sin(angle)*moveSpeed*dt);
 		}
 		if (controls["moveUp"] || controls["moveDown"]) {
 			updateProjection();
@@ -220,6 +321,7 @@ Blind.camera = (function(){
 
 		push.update(dt);
 		tilt.update(dt);
+		collide.update(dt);
 	}
 
 	function draw(ctx) {
@@ -246,6 +348,15 @@ Blind.camera = (function(){
 			ctx.save();
 			ctx.setTransform(1,0,0,1,0,0);
 			ctx.translate(Blind.canvas.width/2, Blind.canvas.height/2 + push.getValue());
+
+			var collideAlpha = collide.getValue();
+			if (collideAlpha) {
+				ctx.fillStyle = "rgba(200,200,200," + collideAlpha +")";
+				ctx.beginPath();
+				ctx.arc(0,0,85,0,Math.PI*2);
+				ctx.fill();
+			}
+
 			ctx.rotate(tilt.getValue());
 			ctx.strokeStyle = "rgba(0,0,0,0.5)";
 			ctx.beginPath();
