@@ -2,6 +2,63 @@ Blind.scene_menu = (function(){
 	
 	var script;
 
+	var demo = (function() {
+		var points = [
+			{dt: 0, x:370, y:217 },
+			{dt: 5, x:380, y:48 },
+			{dt: 5, x:472, y:112 },
+			{dt: 5, x:597, y:129 },
+			{dt: 4, x:526, y:160 },
+			{dt: 4, x:543, y:253 },
+			{dt: 5, x:675, y:311 },
+			{dt: 2, x:624, y:367 },
+			{dt: 10, x:264, y:372 },
+			{dt: 4, x:254, y:258 },
+			{dt: 4, x:145, y:251 },
+			{dt: 3, x:147, y:204 },
+			{dt: 4, x:275, y:188 },
+			{dt: 2, x:255, y:120 },
+			{dt: 2, x:182, y:94 },
+			{dt: 3, x:43, y:101 },
+			{dt: 5, x:179, y:35 },
+			{dt: 4, x:305, y:72 },
+			{dt: 6, x:345, y:186 },
+			{dt: 3, x:370, y:217 },
+		];
+		var delta_times = [];
+
+		var i, len=points.length;
+		var p,q;
+		for (i=0; i<len; i++) {
+			p = points[i];
+			q = (i == len-1) ? points[1] : points[i+1];
+			delta_times.push(p.dt);
+			p.angle = Math.atan2(q.y-p.y, q.x-p.x);
+		}
+
+		var path = new Blind.Path(
+			Blind.makeHermiteInterpForObjs(points, ['x', 'y', 'angle'], delta_times),
+			{
+				loop: true,
+			});
+
+		function init() {
+			path.reset();
+		}
+
+		function update(dt) {
+			path.step(dt);
+			Blind.camera.setPosition(path.pos.x, path.pos.y);
+			Blind.camera.setAngle(path.pos.angle);
+			Blind.camera.updateProjection();
+		}
+
+		return {
+			init: init,
+			update: update,
+		};
+	})();
+
 	var shiftCaption = (function() {
 		var img;
 		var enabled;
@@ -75,7 +132,7 @@ Blind.scene_menu = (function(){
 			},
 			'end': function (mx,my) {
 				if (startedInside) {
-					Blind.setScene(Blind.scene_game);
+					Blind.setScene(Blind.scene_testmove);
 				}
 			},
 		};
@@ -176,6 +233,7 @@ Blind.scene_menu = (function(){
 
 		buttons.init();
 		shiftCaption.init();
+		demo.init();
 
 		script = new Blind.TimedScript([
 			{
@@ -211,6 +269,7 @@ Blind.scene_menu = (function(){
 	}
 
 	function update(dt) {
+		demo.update(dt);
 		Blind.camera.update(dt);
 		lid.update(dt);
 		script.update(dt);

@@ -53,13 +53,13 @@ Blind.InterpDriver.prototype = {
 	},
 };
 
-Blind.Path = function(interp, loop) {
+Blind.Path = function(interp, dict) {
 	this.interp = interp;
 	this.startTime = interp.startTime;
 	this.totalTime = interp.totalTime;
-	this.loop = loop;
+	this.loop = dict.loop;
+	this.freezeAtEnd = dict.freezeAtEnd;
 	this.reset();
-	this.freezeAtEnd = false;
 };
 
 Blind.Path.prototype = {
