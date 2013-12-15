@@ -145,7 +145,6 @@ Blind.camera = (function(){
 		else if (projFade > projFadeTarget) {
 			projFade = Math.max(projFadeTarget, projFade - projFadeSpeed*dt);
 		}
-		console.log(projFade);
 	}
 
 	function draw(ctx) {
@@ -166,6 +165,16 @@ Blind.camera = (function(){
 
 		function draw2D() {
 			map.draw(ctx);
+
+			var alpha = ctx.globalAlpha;
+			ctx.globalAlpha = ctx.globalAlpha * 0.3;
+			Blind.drawCones(ctx, {
+				x: x,
+				y: y,
+				projection: projection,
+			});
+			ctx.globalAlpha = alpha;
+
 			ctx.beginPath();
 			ctx.arc(x,y,3,0,Math.PI*2);
 			ctx.fillStyle = "#FFF";

@@ -249,3 +249,46 @@ Blind.drawArcs = function(ctx, dict) {
 		ctx.stroke();
 	}
 };
+
+Blind.drawCones = function(ctx, dict) {
+	var x = dict.x;
+	var y = dict.y;
+	var proj = dict.projection;
+
+	function lineTo(angle,dist) {
+		ctx.lineTo(
+			x + Math.cos(angle) * dist,
+			y + Math.sin(angle) * dist
+		);
+	}
+
+	var segs = proj.visibleSegments;
+	var i,len=segs.length;
+	var s;
+	for (i=0; i<len; i++) {
+		s = segs[i];
+		ctx.fillStyle = s.seg.box.color;
+		ctx.beginPath();
+		ctx.moveTo(x,y);
+		lineTo(s.a0, s.d0);
+		lineTo(s.a1, s.d1);
+		var box = s.seg.box;
+		var a0 = s.a0;
+		var a1 = s.a1;
+		var j;
+		for (j=i+1; j<len; j++) {
+			s = segs[j];
+			if (s.a0 == a1 && s.seg.box == box) {
+				lineTo(s.a0, s.d0);
+				lineTo(s.a1, s.d1);
+				a1 = s.a1;
+			}
+			else {
+				break;
+			}
+		}
+		i = j-1;
+		ctx.closePath();
+		ctx.fill();
+	}
+};
