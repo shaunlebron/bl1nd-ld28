@@ -124,7 +124,7 @@ Blind.camera = (function(){
 		projFadeTarget = 0;
 	}
 	function fadeTo2D() {
-		projFadeTarget = 1;
+		projFadeTarget = 0.75;
 	}
 
 	// ========================== MAP & PROJECTION  =============================
