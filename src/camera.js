@@ -154,6 +154,12 @@ Blind.camera = (function(){
 		ctx.translate(-x, -y);
 
 		function draw1D() {
+			ctx.save();
+			ctx.setTransform(1,0,0,1,0,0);
+			var img = Blind.assets.images["eye"];
+			ctx.drawImage(img,Blind.canvas.width/2 - img.width/2, Blind.canvas.height/2 - img.height/2);
+			ctx.restore();
+
 			Blind.drawArcs(ctx, {
 				x: x,
 				y: y,
@@ -167,6 +173,7 @@ Blind.camera = (function(){
 			map.draw(ctx);
 
 			var alpha = ctx.globalAlpha;
+
 			ctx.globalAlpha = ctx.globalAlpha * 0.3;
 			Blind.drawCones(ctx, {
 				x: x,
@@ -174,6 +181,14 @@ Blind.camera = (function(){
 				projection: projection,
 			});
 			ctx.globalAlpha = alpha;
+
+			Blind.drawArcs(ctx, {
+				x: x,
+				y: y,
+				radius: 50,
+				lineWidth: 10,
+				projection: projection,
+			});
 
 			ctx.beginPath();
 			ctx.arc(x,y,3,0,Math.PI*2);
