@@ -31,6 +31,10 @@ Blind.camera = (function(){
 		projFadeTarget = 1;
 	}
 
+	function getEyeRadius() {
+		return 100;
+	}
+
 	// ========================== MAP & PROJECTION  =============================
 
 	var map;
@@ -163,8 +167,8 @@ Blind.camera = (function(){
 			Blind.drawArcs(ctx, {
 				x: x,
 				y: y,
-				radius: 50,
-				lineWidth: 10,
+				radius: 100,
+				lineWidth: 30,
 				projection: projection,
 			});
 		}
@@ -181,14 +185,6 @@ Blind.camera = (function(){
 				projection: projection,
 			});
 			ctx.globalAlpha = alpha;
-
-			Blind.drawArcs(ctx, {
-				x: x,
-				y: y,
-				radius: 50,
-				lineWidth: 10,
-				projection: projection,
-			});
 
 			ctx.beginPath();
 			ctx.arc(x,y,3,0,Math.PI*2);
