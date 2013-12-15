@@ -9,7 +9,7 @@ window.addEventListener('load', function() {
 
 	Blind.assets.load(function(){
 		Blind.input.init();
-		Blind.setScene(Blind.scene_testmap);
+		Blind.setScene(Blind.scene_testmove);
 		Blind.executive.start();
 	});
 });
