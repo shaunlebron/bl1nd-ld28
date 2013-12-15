@@ -28,6 +28,7 @@ Blind.camera = (function(){
 
 	function init(_map) {
 		map = _map;
+		updateProjection();
 	}
 
 	function updateProjection() {
@@ -110,6 +111,9 @@ Blind.camera = (function(){
 			x -= Math.cos(angle)*moveSpeed*dt;
 			y -= Math.sin(angle)*moveSpeed*dt;
 		}
+		if (controls["moveUp"] || controls["moveDown"]) {
+			updateProjection();
+		}
 	}
 
 	function draw(ctx) {
@@ -121,6 +125,13 @@ Blind.camera = (function(){
 		ctx.rotate(-Math.PI/2-angle);
 		ctx.translate(-x, -y);
 		map.draw(ctx);
+		Blind.drawArcs(ctx, {
+			x: x,
+			y: y,
+			radius: 50,
+			lineWidth: 10,
+			projection: projection,
+		});
 
 		ctx.restore();
 	}

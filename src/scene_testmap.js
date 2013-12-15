@@ -89,7 +89,6 @@ Blind.scene_testmap = (function(){
 				radius: 100,
 				lineWidth: 10,
 				projection: projection,
-				angle: -Math.PI/2,
 			});
 		}
 		ctx.restore();

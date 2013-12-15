@@ -219,14 +219,9 @@ Blind.getProjection = function(dict) {
 Blind.drawArcs = function(ctx, dict) {
 	var x = dict.x;
 	var y = dict.y;
-	var angle = dict.angle;
 	var radius = dict.radius;
 	var lineWidth = dict.lineWidth;
 	var proj = dict.projection;
-
-	ctx.save();
-	ctx.translate(x,y);
-	ctx.rotate(-Math.PI/2-angle);
 
 	ctx.lineWidth = lineWidth;
 
@@ -237,8 +232,7 @@ Blind.drawArcs = function(ctx, dict) {
 		s = segs[i];
 		ctx.strokeStyle = s.seg.box.color;
 		ctx.beginPath();
-		ctx.arc(0,0,radius,s.a0, s.a1, false);
+		ctx.arc(x,y,radius,s.a0, s.a1, false);
 		ctx.stroke();
 	}
-	ctx.restore();
 };
