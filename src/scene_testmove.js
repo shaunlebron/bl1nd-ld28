@@ -5,6 +5,7 @@ Blind.scene_testmove = (function(){
 		Blind.camera.init(map);
 		Blind.camera.enableViewKeys();
 		Blind.camera.enableMoveKeys();
+		Blind.camera.enableProjKeys();
 	}
 
 	function cleanup() {

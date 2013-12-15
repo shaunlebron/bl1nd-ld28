@@ -21,6 +21,16 @@ Blind.camera = (function(){
 		angle = _angle;
 	}
 
+	var projFade=0;
+	var projFadeTarget=0;
+	var projFadeSpeed = 4;
+	function fadeTo1D() {
+		projFadeTarget = 0;
+	}
+	function fadeTo2D() {
+		projFadeTarget = 1;
+	}
+
 	// ========================== MAP & PROJECTION  =============================
 
 	var map;
@@ -89,10 +99,24 @@ Blind.camera = (function(){
 			},
 		}
 	};
+	var projKeyHandler = {
+		'press': {
+			'shift': function() {
+				fadeTo2D();
+			},
+		},
+		'release': {
+			'shift': function() {
+				fadeTo1D();
+			},
+		},
+	};
 	function enableViewKeys()  { Blind.input.addKeyHandler(    viewKeyHandler); }
 	function disableViewKeys() { Blind.input.removeKeyHandler( viewKeyHandler); }
 	function enableMoveKeys()  { Blind.input.addKeyHandler(    moveKeyHandler); }
 	function disableMoveKeys() { Blind.input.removeKeyHandler( moveKeyHandler); }
+	function enableProjKeys()  { Blind.input.addKeyHandler(    projKeyHandler); }
+	function disableProjKeys() { Blind.input.removeKeyHandler( projKeyHandler); }
 
 	// ========================== MAIN FUNCTIONS  =============================
 
@@ -114,24 +138,53 @@ Blind.camera = (function(){
 		if (controls["moveUp"] || controls["moveDown"]) {
 			updateProjection();
 		}
+
+		if (projFade < projFadeTarget) {
+			projFade = Math.min(projFadeTarget, projFade + projFadeSpeed*dt);
+		}
+		else if (projFade > projFadeTarget) {
+			projFade = Math.max(projFadeTarget, projFade - projFadeSpeed*dt);
+		}
+		console.log(projFade);
 	}
 
 	function draw(ctx) {
 		ctx.save();
 		ctx.translate(Blind.canvas.width/2, Blind.canvas.height/2);
-		var w = 4;
-		ctx.fillStyle="#FFF";
-		ctx.fillRect(-w/2,-w/2,w,w);
 		ctx.rotate(-Math.PI/2-angle);
 		ctx.translate(-x, -y);
-		map.draw(ctx);
-		Blind.drawArcs(ctx, {
-			x: x,
-			y: y,
-			radius: 50,
-			lineWidth: 10,
-			projection: projection,
-		});
+
+		function draw1D() {
+			Blind.drawArcs(ctx, {
+				x: x,
+				y: y,
+				radius: 50,
+				lineWidth: 10,
+				projection: projection,
+			});
+		}
+
+		function draw2D() {
+			map.draw(ctx);
+			ctx.beginPath();
+			ctx.arc(x,y,3,0,Math.PI*2);
+			ctx.fillStyle = "#FFF";
+			ctx.fill();
+		}
+
+		if (projFade == 0) {
+			draw1D();
+		}
+		else if (projFade == 1) {
+			draw2D();
+		}
+		else {
+			ctx.globalAlpha = 1-projFade;
+			draw1D();
+			ctx.globalAlpha = projFade;
+			draw2D();
+			ctx.globalAlpha = 1;
+		}
 
 		ctx.restore();
 	}
@@ -143,6 +196,8 @@ Blind.camera = (function(){
 		disableViewKeys: disableViewKeys,
 		enableMoveKeys: enableMoveKeys,
 		disableMoveKeys: disableMoveKeys,
+		enableProjKeys: enableProjKeys,
+		disableProjKeys: disableProjKeys,
 		setPosition: setPosition,
 		setAngle: setAngle,
 		update: update,
