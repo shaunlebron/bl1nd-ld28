@@ -2,15 +2,17 @@ Blind.scene_testmap = (function(){
 
 	var playerX=0, playerY=0;
 	var segs = [];
+	var projection;
 
 	function updatePlayerPos(x,y) {
 		playerX = x;
 		playerY = y;
-		quadrants = Blind.projector(playerX, playerY, map.boxes);
+		projection = Blind.projector(playerX, playerY, map.boxes);
+
 		segs.length = 0;
 		var i,j,q,len;
 		for (i=0; i<4; i++) {
-			q = quadrants[i];
+			q = projection.quadrants[i];
 			len = q.length;
 			for (j=0; j<len; j++) {
 				segs.push(q[j]);
