@@ -3,26 +3,14 @@ Blind.scene_testmap = (function(){
 	var playerX=0, playerY=0;
 	var segs = [];
 	var projection;
-	var mids = [];
+	var refs = [];
 
 	function updatePlayerPos(x,y) {
 		playerX = x;
 		playerY = y;
 		projection = Blind.projector(playerX, playerY, map.boxes);
 		segs = projection.segments;
-
-		mids.length = 0;
-		var i,q,seg,len=segs.length;
-		for (i=0; i<len; i++) {
-			seg = segs[i];
-
-			var a = seg.angle0 + (seg.angle1-seg.angle0) / 2;
-			var dist = seg.getDistAtAngle(a);
-			mids.push({
-				x: Math.cos(a) * dist,
-				y: Math.sin(a) * dist,
-			});
-		}
+		refs = projection.refpoints;
 	}
 
 	var mouseHandler = {
@@ -66,12 +54,19 @@ Blind.scene_testmap = (function(){
 			ctx.moveTo(s.x0, s.y0);
 			ctx.lineTo(s.x1, s.y1);
 			ctx.stroke();
-
-			mid = mids[i];
+		}
+		var len=refs.length,ref;
+		for (i=0; i<len; i++) {
+			ref = refs[i];
+			var val = Math.floor(i/len*255);
+			var color = "rgb("+val+","+val+","+val+")";
+			ctx.strokeStyle = color;
 			ctx.lineWidth = 1;
 			ctx.beginPath();
 			ctx.moveTo(0,0);
-			ctx.lineTo(mid.x, mid.y);
+			var a = ref.angle;
+			var d = ref.seg.getDistAtAngle(a);
+			ctx.lineTo(Math.cos(a)*d, Math.sin(a)*d);
 			ctx.stroke();
 		}
 		ctx.restore();

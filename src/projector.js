@@ -95,8 +95,30 @@ Blind.projector = function(cx,cy, boxes) {
 		return segments;
 	}
 	var segments = getSegments();
+
+	var refpoints = [];
+	var i,len=segments.length;
+	var a0,a1;
+	var seg;
+	for (i=0; i<len; i++) {
+		seg = segments[i];
+		(function(seg){
+			a0 = seg.angle0;
+			a1 = seg.angle1;
+			var ref0 = { angle: a0, order:0, seg: seg };
+			var ref1 = { angle: a1, order:1, seg: seg };
+			if (a0 > a1) {
+				ref0.order = 1;
+				ref1.order = 0;
+			}
+			refpoints.push(ref0);
+			refpoints.push(ref1);
+		})(seg);
+	}
+	refpoints.sort(function(a,b) { return a.angle - b.angle });
 	
 	return {
 		segments: segments,
+		refpoints: refpoints,
 	};
 };
