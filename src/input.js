@@ -34,11 +34,11 @@ Blind.input = (function(){
 	}
 
 	function keyDown(keyName) {
-		keyHelper('down',keyName);
+		keyHelper('press',keyName);
 	}
 
 	function keyUp(keyName) {
-		keyHelper('up',keyName);
+		keyHelper('release',keyName);
 	}
 
 	// ====================== MOUSE ==========================
