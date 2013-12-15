@@ -22,32 +22,18 @@ Blind.Segment.prototype = {
 	},
 };
 
-Blind.Quadrant = function(segs) {
-	this.segs = segs;
-	
-	// create sorted corner list
-};
-
-Blind.Quadrant.prototype = {
-};
-
 Blind.projector = function(cx,cy, boxes) {
-	var TOPRIGHT=0, TOPLEFT=1, BOTTOMLEFT=2, BOTTOMRIGHT=3;
 
-	function getQuadrants() {
-		var quadrants = [[],[],[],[]];
+	function getSegments() {
+		var segments = [];
 		function processVSeg(box,x,y0,y1) {
-			var seg = new Blind.Segment({
-				box: box,
-				x0: x, y0: y0,
-				x1: x, y1: y1,
-				type: 'v',
-			});
-			if (y1 <= 0) {
-				quadrants[x<0 ? TOPLEFT : TOPRIGHT].push(seg);
-			}
-			else if (y0 >= 0) {
-				quadrants[x<0 ? BOTTOMLEFT : BOTTOMRIGHT].push(seg);
+			if (y1 <= 0 || y0 >= 0) {
+				segments.push(new Blind.Segment({
+					box: box,
+					x0: x, y0: y0,
+					x1: x, y1: y1,
+					type: 'v',
+				}));
 			}
 			else {
 				processVSeg(box, x,y0,0);
@@ -55,17 +41,13 @@ Blind.projector = function(cx,cy, boxes) {
 			}
 		}
 		function processHSeg(box,y,x0,x1) {
-			var seg = new Blind.Segment({
-				box: box,
-				x0: x0, y0: y,
-				x1: x1, y1: y,
-				type: 'h',
-			});
-			if (x1 <= 0) {
-				quadrants[y<0 ? TOPLEFT : BOTTOMLEFT].push(seg);
-			}
-			else if (x0 >= 0) {
-				quadrants[y<0 ? TOPRIGHT : BOTTOMRIGHT].push(seg);
+			if (x1 <= 0 || x0 >= 0) {
+				segments.push(new Blind.Segment({
+					box: box,
+					x0: x0, y0: y,
+					x1: x1, y1: y,
+					type: 'h',
+				}));
 			}
 			else {
 				processHSeg(box, y,x0,0);
@@ -103,11 +85,11 @@ Blind.projector = function(cx,cy, boxes) {
 		for (i=0; i<len; i++) {
 			processBox(boxes[i]);
 		}
-		return quadrants;
+		return segments;
 	}
-	quadrants = getQuadrants();
-
+	var segments = getSegments();
+	
 	return {
-		quadrants: quadrants,
+		segments: segments,
 	};
 };

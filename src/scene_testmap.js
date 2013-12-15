@@ -9,24 +9,19 @@ Blind.scene_testmap = (function(){
 		playerX = x;
 		playerY = y;
 		projection = Blind.projector(playerX, playerY, map.boxes);
+		segs = projection.segments;
 
-		segs.length = 0;
 		mids.length = 0;
-		var i,j,q,seg,len;
-		for (i=0; i<4; i++) {
-			q = projection.quadrants[i];
-			len = q.length;
-			for (j=0; j<len; j++) {
-				seg = q[j]
-				segs.push(seg);
+		var i,q,seg,len=segs.length;
+		for (i=0; i<len; i++) {
+			seg = segs[i];
 
-				var a = seg.angle0 + (seg.angle1-seg.angle0) / 2;
-				var dist = seg.getDistAtAngle(a);
-				mids.push({
-					x: Math.cos(a) * dist,
-					y: Math.sin(a) * dist,
-				});
-			}
+			var a = seg.angle0 + (seg.angle1-seg.angle0) / 2;
+			var dist = seg.getDistAtAngle(a);
+			mids.push({
+				x: Math.cos(a) * dist,
+				y: Math.sin(a) * dist,
+			});
 		}
 	}
 
