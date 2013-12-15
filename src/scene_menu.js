@@ -119,20 +119,40 @@ Blind.scene_menu = (function(){
 	})();
 
 	var buttons = (function() {
-		var imgNewGame, imgContinue;
-		var x=12,y0=160,y1=200;
+		var imgNewGame, imgContinue, imgFreeRun;
+		var x=12,y0=160,y1=200,y2=240;
 		var enabled;
 
-		var startedInside;
+		function isInsideNewGameBtn(mx,my) {
+			return (x  <= mx && mx <= x  + imgNewGame.width &&
+				y0 <= my && my <= y0 + imgNewGame.height);
+		}
+
+		function isInsideContinueBtn(mx, my) {
+			return (x  <= mx && mx <= x  + imgContinue.width &&
+				y1 <= my && my <= y1 + imgContinue.height);
+		}
+
+		function isInsideFreeRunBtn(mx, my) {
+			return (x  <= mx && mx <= x  + imgFreeRun.width &&
+				y2 <= my && my <= y2 + imgFreeRun.height);
+		}
+
+		var startedInsideNewGame, startedInsideContinue, startedInsideFreeRun;
 		var mouseHandler = {
 			'start': function (mx,my) {
-				startedInside = (
-					x  <= mx && mx <= x  + imgNewGame.width &&
-					y0 <= my && my <= y0 + imgNewGame.height);
+				startedInsideNewGame = isInsideNewGameBtn(mx,my);
+				startedInsideContinue = isInsideContinueBtn(mx,my);
+				startedInsideFreeRun = isInsideFreeRunBtn(mx,my);
 			},
 			'end': function (mx,my) {
-				if (startedInside) {
-					Blind.setScene(Blind.scene_testmove);
+				if (startedInsideNewGame && isInsideNewGameBtn(mx,my)) {
+					
+				}
+				else if (startedInsideContinue && isInsideContinueBtn(mx,my)) {
+				}
+				else if (startedInsideFreeRun && isInsideFreeRunBtn(mx,my)) {
+					Blind.setScene(Blind.scene_freerun);
 				}
 			},
 		};
@@ -158,6 +178,7 @@ Blind.scene_menu = (function(){
 			alphaDriver.reset();
 			imgNewGame = Blind.assets.images["newgame"];
 			imgContinue = Blind.assets.images["continue"];
+			imgFreeRun = Blind.assets.images["freerun"];
 		}
 		
 		function draw(ctx) {
@@ -169,6 +190,7 @@ Blind.scene_menu = (function(){
 				ctx.globalAlpha = ctx.globalAlpha * 0.2;
 				ctx.drawImage(imgContinue, x, y1);
 				ctx.globalAlpha = 1;
+				ctx.drawImage(imgFreeRun, x, y2);
 			}
 		}
 

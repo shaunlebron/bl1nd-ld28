@@ -1,4 +1,12 @@
-Blind.scene_testmove = (function(){
+Blind.scene_freerun = (function(){
+
+	var keyHandler = {
+		'press': {
+			'esc': function() {
+				Blind.setScene(Blind.scene_menu);
+			},
+		},
+	};
 
 	function init() {
 		map = new Blind.Map(Blind.assets.json["map_title"]);
@@ -6,11 +14,14 @@ Blind.scene_testmove = (function(){
 		Blind.camera.enableViewKeys();
 		Blind.camera.enableMoveKeys();
 		Blind.camera.enableProjKeys();
+		Blind.input.addKeyHandler(keyHandler);
 	}
 
 	function cleanup() {
 		Blind.camera.disableViewKeys();
 		Blind.camera.disableMoveKeys();
+		Blind.camera.disableProjKeys();
+		Blind.input.removeKeyHandler(keyHandler);
 	}
 
 	function draw(ctx) {

@@ -3,8 +3,8 @@ X(15 min) addKeyHandler
 X(30 min) simple title 
 X(30 min) player movement and view rotation 
 X(40 min) control feedback (tilt left/right, lean up/down) 
--(2 hours) collision prevention 
--(30 min) collision feedback 
+X(2 hours) collision prevention 
+X(30 min) collision feedback 
 X(40 min) attract mode with shift to transition from 1d to 2d 
 -(40 min) new game, continue game
 -(4 hours) first level 

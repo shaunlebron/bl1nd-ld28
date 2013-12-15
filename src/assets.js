@@ -13,6 +13,7 @@ Blind.assets = (function(){
 		"newgame": "img/newgame.png",
 		"continue": "img/continue.png",
 		"shift": "img/shift.png",
+		"freerun": "img/freerun.png",
 	};
 
 	var jsonSources = {
