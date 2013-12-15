@@ -9,6 +9,13 @@ Blind.Segment = function(dict) {
 	this.distSq1 = this.x1*this.x1 + this.y1*this.y1;
 	this.angle0 = Math.atan2(this.y0, this.x0);
 	this.angle1 = Math.atan2(this.y1, this.x1);
+
+	// Tricky corner case:
+	// Force angles of vertical segment endpoints from traveling over the atan2
+	// portal at PI.
+	if (this.type == 'v' && this.y1 == 0 && this.x0 < 0) {
+		this.angle1 = -this.angle1;
+	}
 };
 
 Blind.Segment.prototype = {
