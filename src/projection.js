@@ -230,9 +230,22 @@ Blind.drawArcs = function(ctx, dict) {
 	var s;
 	for (i=0; i<len; i++) {
 		s = segs[i];
-		ctx.strokeStyle = s.seg.box.color;
+		var color = ctx.strokeStyle = s.seg.box.color;
+		var a0 = s.a0;
+		var a1 = s.a1;
+		var j;
+		for (j=i+1; j<len; j++) {
+			s = segs[j];
+			if (s.a0 == a1 && s.seg.box.color == color) {
+				a1 = s.a1;
+			}
+			else {
+				break;
+			}
+		}
+		i = j-1;
 		ctx.beginPath();
-		ctx.arc(x,y,radius,s.a0, s.a1, false);
+		ctx.arc(x,y,radius,a0, a1, false);
 		ctx.stroke();
 	}
 };
