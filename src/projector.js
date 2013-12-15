@@ -71,5 +71,5 @@ Blind.projector = function(cx,cy, boxes) {
 		return quadrants;
 	}
 	quadrants = getQuadrants();
-
+	return quadrants;
 };

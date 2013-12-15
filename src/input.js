@@ -56,6 +56,11 @@ Blind.input = (function(){
 		mouseHelper('cancel',x,y);
 	};
 
+	var borderSize = 0;
+	function setBorderSize(s) {
+		borderSize = s;
+	}
+
 	// initialize 
 	function init() {
 
@@ -71,6 +76,10 @@ Blind.input = (function(){
 			addOffset(obj);
 			while (obj = obj.offsetParent) {
 				addOffset(obj);
+			}
+			if (borderSize) {
+				p.x += borderSize;
+				p.y += borderSize;
 			}
 			return p;
 		}
@@ -96,5 +105,6 @@ Blind.input = (function(){
 		getPoint: function() { return point; },
 		addMouseHandler: addMouseHandler,
 		removeMouseHandler: removeMouseHandler,
+		setBorderSize: setBorderSize,
 	};
 })();
