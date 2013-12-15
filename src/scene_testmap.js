@@ -9,7 +9,11 @@ Blind.scene_testmap = (function(){
 	function updatePlayerPos(x,y) {
 		playerX = x;
 		playerY = y;
-		projection = Blind.getProjection(playerX, playerY, map.boxes);
+		projection = Blind.getProjection({
+			x: playerX,
+			y: playerY,
+			boxes: map.boxes
+		});
 		segs = projection.segments;
 		refs = projection.refpoints;
 		visibleSegs = projection.visibleSegments;
@@ -97,6 +101,17 @@ Blind.scene_testmap = (function(){
 			ctx.fill();
 		}
 		ctx.globalAlpha = 1;
+
+		if (projection) {
+			Blind.drawArcs(ctx, {
+				x: 0,
+				y: 0,
+				radius: 100,
+				lineWidth: 10,
+				projection: projection,
+				angle: -Math.PI/2,
+			});
+		}
 		ctx.restore();
 	}
 

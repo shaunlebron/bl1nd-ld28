@@ -29,7 +29,10 @@ Blind.Segment.prototype = {
 	},
 };
 
-Blind.getProjection = function(cx,cy, boxes) {
+Blind.getProjection = function(dict) {
+	var cx = dict.x;
+	var cy = dict.y;
+	var boxes = dict.boxes;
 
 	function getSegments() {
 		var segments = [];
@@ -211,4 +214,31 @@ Blind.getProjection = function(cx,cy, boxes) {
 		refpoints: refpoints,
 		visibleSegments: visibleSegments,
 	};
+};
+
+Blind.drawArcs = function(ctx, dict) {
+	var x = dict.x;
+	var y = dict.y;
+	var angle = dict.angle;
+	var radius = dict.radius;
+	var lineWidth = dict.lineWidth;
+	var proj = dict.projection;
+
+	ctx.save();
+	ctx.translate(x,y);
+	ctx.rotate(-Math.PI/2-angle);
+
+	ctx.lineWidth = lineWidth;
+
+	var segs = proj.visibleSegments;
+	var i,len=segs.length;
+	var s;
+	for (i=0; i<len; i++) {
+		s = segs[i];
+		ctx.strokeStyle = s.seg.box.color;
+		ctx.beginPath();
+		ctx.arc(0,0,radius,s.a0, s.a1, false);
+		ctx.stroke();
+	}
+	ctx.restore();
 };
