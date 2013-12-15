@@ -1,5 +1,47 @@
 
 Blind.input = (function(){
+	
+
+	// ====================== KEYS ==========================
+
+
+	var keyHandlers = [];
+	function addKeyHandler(h) {
+		keyHandlers.push(h);
+	};
+	function removeKeyHandler(h) {
+		var i;
+		while ( (i=keyHandlers.indexOf(h)) != -1) {
+			keyHandlers.splice(i,1);
+		}
+	};
+	function forEachKeyHandler(callback) {
+		var len = keyHandlers.length;
+		var i;
+		for (i=0; i<len; i++) {
+			if (keyHandlers[i]) {
+				callback(keyHandlers[i]);
+			}
+		};
+	};
+
+	function keyHelper(keyDir,keyName) {
+		forEachKeyHandler(function(handler) {
+			if (handler[keyDir] && handler[keyDir][keyName]) {
+				handler[keyDir][keyName]();
+			}
+		});
+	}
+
+	function keyDown(keyName) {
+		keyHelper('down',keyName);
+	}
+
+	function keyUp(keyName) {
+		keyHelper('up',keyName);
+	}
+
+	// ====================== MOUSE ==========================
 
 	var mouseHandlers = [];
 	function addMouseHandler(h) {
@@ -84,7 +126,7 @@ Blind.input = (function(){
 			return p;
 		}
 
-		var wrapFunc = function(f) {
+		function wrapMouseFunc(f) {
 			return function(evt) {
 				var canvasPos = getCanvasPos();
 				var x = evt.pageX-canvasPos.x;
@@ -92,11 +134,55 @@ Blind.input = (function(){
 				f(x, y);
 				evt.preventDefault();
 			};
-		};
-		canvas.addEventListener('mousedown',	wrapFunc(mouseStart));
-		canvas.addEventListener('mousemove',	wrapFunc(mouseMove));
-		canvas.addEventListener('mouseup',		wrapFunc(mouseEnd));
-		canvas.addEventListener('mouseout',		wrapFunc(mouseCancel));
+		}
+		canvas.addEventListener('mousedown',	wrapMouseFunc(mouseStart));
+		canvas.addEventListener('mousemove',	wrapMouseFunc(mouseMove));
+		canvas.addEventListener('mouseup',		wrapMouseFunc(mouseEnd));
+		canvas.addEventListener('mouseout',		wrapMouseFunc(mouseCancel));
+
+		
+		function wrapKeyFunc(f) {
+			var names = {
+				8: 'backspace',
+				9: 'tab',
+				13: 'enter',
+				16: 'shift',
+				17: 'ctrl',
+				18: 'alt',
+				27: 'esc',
+				32: 'space',
+				37: 'left',
+				38: 'up',
+				39: 'right',
+				40: 'down',
+				46: 'delete',
+			};
+			function getKeyNameFromCode(code) {
+				// return key name from table
+				var name = names[code];
+				if (name) {
+					return name;
+				}
+
+				// return digit
+				if (48 <= code && code <= 57) {
+					return (code-48)+'';
+				}
+
+				// return letter
+				if (65 <= code && code <= 90) {
+					return String.fromCharCode(code).toLowerCase();
+				}
+			}
+			return function(evt) {
+				var name = getKeyNameFromCode(evt.keyCode);
+				if (name) {
+					f(name);
+				}
+			};
+		}
+		window.addEventListener('keydown', wrapKeyFunc(keyDown));
+		window.addEventListener('keyup',   wrapKeyFunc(keyUp));
 	};
 
 	return {
@@ -105,6 +191,8 @@ Blind.input = (function(){
 		getPoint: function() { return point; },
 		addMouseHandler: addMouseHandler,
 		removeMouseHandler: removeMouseHandler,
+		addKeyHandler: addKeyHandler,
+		removeKeyHandler: removeKeyHandler,
 		setBorderSize: setBorderSize,
 	};
 })();

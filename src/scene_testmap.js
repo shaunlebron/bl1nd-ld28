@@ -23,10 +23,30 @@ Blind.scene_testmap = (function(){
 			updatePlayerPos(x,y);
 		},
 	};
+
+	var keyHandler = {
+		'down': {
+			'enter': function() {
+				console.log('down','enter');
+			},
+			'shift': function() {
+				console.log('hi from shift');
+			},
+		},
+		'up': {
+			'enter': function() {
+				console.log('up','enter');
+			},
+			'shift': function() {
+				console.log('bye from shift');
+			}
+		},
+	};
 	
 	var map;
 	function init() {
 		Blind.input.addMouseHandler(mouseHandler);
+		Blind.input.addKeyHandler(keyHandler);
 		map = new Blind.Map(Blind.assets.json["map_title"]);
 	}
 
