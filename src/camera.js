@@ -225,6 +225,7 @@ Blind.camera = (function(){
 
 	// ========================== COLLISION FUNCTIONS  =============================
 
+	var collidePad = 0.01;
 	function collideX(dx) {
 		if (dx == 0) {
 			return x;
@@ -240,7 +241,7 @@ Blind.camera = (function(){
 				if (b.y <= y && y <= b.y+b.h &&
 					boundX <= x && x+dx <= boundX) {
 					collide.trigger();
-					return boundX;
+					return boundX + collidePad;
 				}
 			}
 		}
@@ -251,7 +252,7 @@ Blind.camera = (function(){
 				if (b.y <= y && y <= b.y+b.h &&
 					x <= boundX && boundX <= x+dx) {
 					collide.trigger();
-					return boundX;
+					return boundX - collidePad;
 				}
 			}
 		}
@@ -273,7 +274,7 @@ Blind.camera = (function(){
 				if (b.x <= x && x <= b.x+b.w &&
 					boundY <= y && y+dy <= boundY) {
 					collide.trigger();
-					return boundY;
+					return boundY + collidePad;
 				}
 			}
 		}
@@ -284,7 +285,7 @@ Blind.camera = (function(){
 				if (b.x <= x && x <= b.x+b.w &&
 					y <= boundY && boundY <= y+dy) {
 					collide.trigger();
-					return boundY;
+					return boundY - collidePad;
 				}
 			}
 		}
