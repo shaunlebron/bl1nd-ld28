@@ -1,14 +1,48 @@
+Blind.Segment = function(dict) {
+	this.box = dict.box;
+	this.type = dict.type;
+	this.x0 = dict.x0;
+	this.y0 = dict.y0;
+	this.x1 = dict.x1;
+	this.y1 = dict.y1;
+	this.distSq0 = this.x0*this.x0 + this.y0*this.y0;
+	this.distSq1 = this.x1*this.x1 + this.y1*this.y1;
+	this.angle0 = Math.atan2(this.y0, this.x0);
+	this.angle1 = Math.atan2(this.y1, this.x1);
+};
+
+Blind.Segment.prototype = {
+	getDistAtAngle: function(angle) {
+		if (this.type == 'v') {
+			return this.x0 / Math.cos(angle);
+		}
+		else {
+			return this.y0 / Math.sin(angle);
+		}
+	},
+};
+
+Blind.Quadrant = function(segs) {
+	this.segs = segs;
+	
+	// create sorted corner list
+};
+
+Blind.Quadrant.prototype = {
+};
+
 Blind.projector = function(cx,cy, boxes) {
 	var TOPRIGHT=0, TOPLEFT=1, BOTTOMLEFT=2, BOTTOMRIGHT=3;
 
 	function getQuadrants() {
 		var quadrants = [[],[],[],[]];
 		function processVSeg(box,x,y0,y1) {
-			var seg = {
+			var seg = new Blind.Segment({
 				box: box,
 				x0: x, y0: y0,
 				x1: x, y1: y1,
-			};
+				type: 'v',
+			});
 			if (y1 <= 0) {
 				quadrants[x<0 ? TOPLEFT : TOPRIGHT].push(seg);
 			}
@@ -21,11 +55,12 @@ Blind.projector = function(cx,cy, boxes) {
 			}
 		}
 		function processHSeg(box,y,x0,x1) {
-			var seg = {
+			var seg = new Blind.Segment({
 				box: box,
 				x0: x0, y0: y,
 				x1: x1, y1: y,
-			};
+				type: 'h',
+			});
 			if (x1 <= 0) {
 				quadrants[y<0 ? TOPLEFT : BOTTOMLEFT].push(seg);
 			}
