@@ -9,7 +9,7 @@ Blind.scene_testmap = (function(){
 	function updatePlayerPos(x,y) {
 		playerX = x;
 		playerY = y;
-		projection = Blind.projector(playerX, playerY, map.boxes);
+		projection = Blind.getProjection(playerX, playerY, map.boxes);
 		segs = projection.segments;
 		refs = projection.refpoints;
 		visibleSegs = projection.visibleSegments;

@@ -29,7 +29,7 @@ Blind.Segment.prototype = {
 	},
 };
 
-Blind.projector = function(cx,cy, boxes) {
+Blind.getProjection = function(cx,cy, boxes) {
 
 	function getSegments() {
 		var segments = [];
