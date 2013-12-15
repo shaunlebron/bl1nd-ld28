@@ -118,7 +118,6 @@ Blind.camera = (function(){
 		var w = 4;
 		ctx.fillStyle="#FFF";
 		ctx.fillRect(-w/2,-w/2,w,w);
-		ctx.fillRec
 		ctx.rotate(-Math.PI/2-angle);
 		ctx.translate(-x, -y);
 		map.draw(ctx);
