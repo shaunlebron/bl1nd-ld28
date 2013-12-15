@@ -10,6 +10,9 @@ Blind.assets = (function(){
 	var imageSources = {
 		"eye": "img/eye.png",
 		"title": "img/title.png",
+		"newgame": "img/newgame.png",
+		"continue": "img/continue.png",
+		"shift": "img/shift.png",
 	};
 
 	var jsonSources = {

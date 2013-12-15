@@ -1,19 +1,37 @@
 Blind.scene_blare = (function(){
+
+	var script;
+	var color;
 	
-	var time;
 	function init() {
-		time = 0;
+		color = "#F00";
+		script = new Blind.TimedScript([
+			{
+				time: 0.25,
+				action: function() {
+					color = "#0F0";
+				},
+			},
+			{
+				dt: 0.25,
+				action: function() {
+					color = "#00F";
+				},
+			},
+			{
+				dt: 0.25,
+				action: function() {
+					Blind.setScene(Blind.scene_title);
+				},
+			},
+		]);
 	}
 
 	function update(dt) {
-		time += dt;
-		if (time > 0.25) {
-			Blind.setScene(Blind.scene_title);
-		}
+		script.update(dt);
 	}
 
 	function draw(ctx) {
-		var color = ["#F00", "#0F0", "#00F"][Math.floor(Math.random()*3)];
 		ctx.fillStyle = color;
 		ctx.fillRect(0,0,Blind.canvas.width, Blind.canvas.height);
 	}
