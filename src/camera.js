@@ -113,11 +113,17 @@ Blind.camera = (function(){
 	}
 
 	function draw(ctx) {
+		ctx.save();
+		ctx.translate(Blind.canvas.width/2, Blind.canvas.height/2);
+		var w = 4;
+		ctx.fillStyle="#FFF";
+		ctx.fillRect(-w/2,-w/2,w,w);
+		ctx.fillRec
+		ctx.rotate(-Math.PI/2-angle);
+		ctx.translate(-x, -y);
 		map.draw(ctx);
 
-		var w = 4;
-		ctx.fillStyle = "#FFF";
-		ctx.fillRect(x-w/2,y-w/2,w,w);
+		ctx.restore();
 	}
 
 	return {
