@@ -12,6 +12,70 @@ Blind.camera = (function(){
 	var moveSpeed = 50;
 	var angleSpeed = Math.PI;
 
+	var push = (function(){
+		var value=0, target=0;
+		var offset = 10;
+		var factor = 0.2;
+
+		function pushUp() {
+			target = -offset;
+		}
+		function pushDown() {
+			target = offset;
+		}
+		function reset() {
+			target = 0;
+		}
+
+		function update(dt) {
+			value += (target-value)*factor;
+		}
+
+		function getValue() {
+			return value;
+		}
+
+		return {
+			pushUp: pushUp,
+			reset: reset,
+			pushDown: pushDown,
+			update: update,
+			getValue: getValue,
+		};
+	})();
+
+	var tilt = (function(){
+		var value=0, target=0;
+		var offset = Math.PI/16;
+		var factor = 0.2;
+
+		function tiltLeft() {
+			target = -offset;
+		}
+		function tiltRight() {
+			target = offset;
+		}
+		function reset() {
+			target = 0;
+		}
+
+		function update(dt) {
+			value += (target-value)*factor;
+		}
+
+		function getValue() {
+			return value;
+		}
+
+		return {
+			tiltLeft: tiltLeft,
+			reset: reset,
+			tiltRight: tiltRight,
+			update: update,
+			getValue: getValue,
+		};
+	})();
+
 	function setPosition(_x,_y) {
 		x = _x;
 		y = _y;
@@ -29,10 +93,6 @@ Blind.camera = (function(){
 	}
 	function fadeTo2D() {
 		projFadeTarget = 1;
-	}
-
-	function getEyeRadius() {
-		return 100;
 	}
 
 	// ========================== MAP & PROJECTION  =============================
@@ -71,17 +131,21 @@ Blind.camera = (function(){
 		'press': {
 			'left': function() {
 				controls["turnLeft"] = true;
+				tilt.tiltLeft();
 			},
 			'right': function() {
 				controls["turnRight"] = true;
+				tilt.tiltRight();
 			},
 		},
 		'release': {
 			'left': function() {
 				controls["turnLeft"] = false;
+				tilt.reset();
 			},
 			'right': function() {
 				controls["turnRight"] = false;
+				tilt.reset();
 			},
 		}
 	};
@@ -89,17 +153,21 @@ Blind.camera = (function(){
 		'press': {
 			'up': function() {
 				controls["moveUp"] = true;
+				push.pushUp();
 			},
 			'down': function() {
 				controls["moveDown"] = true;
+				push.pushDown();
 			},
 		},
 		'release': {
 			'up': function() {
 				controls["moveUp"] = false;
+				push.reset();
 			},
 			'down': function() {
 				controls["moveDown"] = false;
+				push.reset();
 			},
 		}
 	};
@@ -149,6 +217,9 @@ Blind.camera = (function(){
 		else if (projFade > projFadeTarget) {
 			projFade = Math.max(projFadeTarget, projFade - projFadeSpeed*dt);
 		}
+
+		push.update(dt);
+		tilt.update(dt);
 	}
 
 	function draw(ctx) {
@@ -165,12 +236,24 @@ Blind.camera = (function(){
 			ctx.restore();
 
 			Blind.drawArcs(ctx, {
-				x: x,
-				y: y,
+				x: x-push.getValue()*Math.cos(angle),
+				y: y-push.getValue()*Math.sin(angle),
 				radius: 100,
 				lineWidth: 30,
 				projection: projection,
 			});
+
+			ctx.save();
+			ctx.setTransform(1,0,0,1,0,0);
+			ctx.translate(Blind.canvas.width/2, Blind.canvas.height/2 + push.getValue());
+			ctx.rotate(tilt.getValue());
+			ctx.strokeStyle = "rgba(0,0,0,0.5)";
+			ctx.beginPath();
+			var a=Math.PI/2;
+			ctx.lineWidth = 31;
+			ctx.arc(0,0, 100, -Math.PI/2+a/2, Math.PI/2*3 - a/2);
+			ctx.stroke();
+			ctx.restore();
 		}
 
 		function draw2D() {

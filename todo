@@ -1,8 +1,8 @@
 X(30 min) 1d renderer 
 X(15 min) addKeyHandler 
 -(30 min) simple title 
--(30 min) player movement and view rotation 
--(40 min) control feedback (tilt left/right, lean up/down) 
+X(30 min) player movement and view rotation 
+X(40 min) control feedback (tilt left/right, lean up/down) 
 -(2 hours) collision prevention 
 -(30 min) collision feedback 
 -(40 min) attract mode with shift to transition from 1d to 2d 
