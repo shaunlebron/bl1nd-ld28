@@ -116,9 +116,99 @@ Blind.projector = function(cx,cy, boxes) {
 		})(seg);
 	}
 	refpoints.sort(function(a,b) { return a.angle - b.angle });
+
+	function getVisibleSegments(refpoints) {
+		var visibleSegments = [];
+
+		var numRefPoints = refpoints.length;
+
+		var arcSegments = [];
+		var refIndex = 0;
+		var currAngle, prevAngle;
+
+		function firstArc() {
+			currAngle = refpoints[0].angle;
+			var i,r;
+			for (i=0; i<numRefPoints; i++) {
+				r = refpoints[i];
+				if (r.angle == currAngle) {
+					if (r.order == 0) {
+						arcSegments.push(r.seg);
+						r.seg.currDist = r.seg.getDistAtAngle(currAngle);
+					}
+					else {
+						console.error('we should not have closed a segment at the start of the first arc');
+					}
+				}
+				else {
+					break;
+				}
+			}
+			refIndex = i;
+		}
+
+		function sweepNextArc() {
+			if (refIndex >= numRefPoints) {
+				return false;
+			}
+			prevAngle = currAngle;
+			currAngle = refpoints[refIndex].angle;
+
+			var i,seg,len=arcSegments.length;
+			var dist, closestSeg, closestDist = Infinity;
+			for (i=0; i<len; i++) {
+				seg = arcSegments[i];
+				seg.prevDist = seg.currDist;
+				seg.currDist = seg.getDistAtAngle(currAngle);
+				dist = Math.min(seg.prevDist, seg.currDist);
+				if (dist < closestDist) {
+					closestDist = dist;
+					closestSeg = seg;
+				}
+			}
+
+			if (closestSeg) {
+				visibleSegments.push({
+					a0: prevAngle,
+					a1: currAngle,
+					d0: closestSeg.prevDist,
+					d1: closestSeg.currDist,
+					seg: closestSeg,
+				});
+			}
+
+			var r;
+			for (i=refIndex; i<numRefPoints; i++) {
+				r = refpoints[i];
+				if (r.angle == currAngle) {
+					if (r.order == 0) {
+						arcSegments.push(r.seg);
+						r.seg.currDist = r.seg.getDistAtAngle(currAngle);
+					}
+					else {
+						arcSegments.splice(arcSegments.indexOf(r.seg), 1);
+					}
+				}
+				else {
+					break;
+				}
+			}
+			refIndex = i;
+			return true;
+		};
+
+		firstArc();
+		while (sweepNextArc()) {
+		}
+
+		return visibleSegments;
+	}
+
+	var visibleSegments = getVisibleSegments(refpoints);
 	
 	return {
 		segments: segments,
 		refpoints: refpoints,
+		visibleSegments: visibleSegments,
 	};
 };
