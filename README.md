@@ -3,6 +3,8 @@
 This is an experimental 1D game.  It is my entry into Ludum Dare 28 "You only
 get one".
 
+![logo](img/logo.png)
+
 ## Goal
 
 My intention is to make an experiment to see if a person can interpret a 2D
