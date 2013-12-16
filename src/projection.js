@@ -65,10 +65,15 @@ Blind.getProjection = function(dict) {
 			}
 		}
 		function processBox(box) {
+			if (box.hide) {
+				return;
+			}
+
 			var x = box.x-cx;
 			var y = box.y-cy;
 			var w = box.w;
 			var h = box.h;
+
 
 			// left
 			if (x > 0) {
