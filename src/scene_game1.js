@@ -125,19 +125,19 @@ Blind.scene_game1 = (function(){
 			{
 				dt: 8,
 				action: function() {
-					Blind.caption.show('msg7', 2);
+					Blind.caption.show('msg7', 4);
 				},
 			},
 			{
-				dt: 4,
+				dt: 6,
 				action: function() {
-					Blind.caption.show('msg8', 2);
+					Blind.caption.show('msg8', 4);
 					couch.hide = false;
 					Blind.camera.updateProjection();
 				},
 			},
 			{
-				dt: 4,
+				dt: 6,
 				action: function() {
 					Blind.caption.show('msg9', 2);
 					Blind.camera.enableMoveKeys();
