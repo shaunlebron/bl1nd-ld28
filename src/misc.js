@@ -1,18 +1,35 @@
 Blind.caption = (function(){
-	function init() {
-	}
+	var alphaDriver;
+	var x=14,y=160;
+	var image;
 
-	function show(image, time) {
+	function show(imageName, time) {
+		image = Blind.assets.images[imageName];
+		alphaDriver = new Blind.InterpDriver(
+			Blind.makeInterp('linear', [0, 1, 1, 0], [0, 1, time, 1]),
+			{
+				freezeAtEnd: true,
+			});
 	}
 
 	function update(dt) {
+		if (alphaDriver) {
+			alphaDriver.step(dt);
+		}
 	}
 
 	function draw(ctx) {
+		if (alphaDriver) {
+			var alpha = alphaDriver.val;
+			if (alpha) {
+				ctx.globalAlpha = alpha;
+				ctx.drawImage(image, x,y);
+				ctx.globalAlpha = 1;
+			}
+		}
 	}
 
 	return {
-		init: init,
 		show: show,
 		update: update,
 		draw: draw,

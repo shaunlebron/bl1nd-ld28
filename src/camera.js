@@ -225,6 +225,21 @@ Blind.camera = (function(){
 
 	// ========================== COLLISION FUNCTIONS  =============================
 
+	var collideAction, collideName;
+	function setCollideAction(name, action) {
+		collideName = name;
+		collideAction = action;
+	}
+	function onCollide(box) {
+		collide.trigger();
+		if (collideAction) {
+			if (box.name == collideName) {
+				collideAction();
+			}
+			collideAction = null;
+		}
+	}
+
 	var collidePad = 0.01;
 	function collideX(dx) {
 		if (dx == 0) {
@@ -240,7 +255,7 @@ Blind.camera = (function(){
 				boundX = b.x+b.w;
 				if (b.y <= y && y <= b.y+b.h &&
 					boundX <= x && x+dx <= boundX) {
-					collide.trigger();
+					onCollide(b);
 					return boundX + collidePad;
 				}
 			}
@@ -251,7 +266,7 @@ Blind.camera = (function(){
 				boundX = b.x;
 				if (b.y <= y && y <= b.y+b.h &&
 					x <= boundX && boundX <= x+dx) {
-					collide.trigger();
+					onCollide(b);
 					return boundX - collidePad;
 				}
 			}
@@ -273,7 +288,7 @@ Blind.camera = (function(){
 				boundY = b.y+b.h;
 				if (b.x <= x && x <= b.x+b.w &&
 					boundY <= y && y+dy <= boundY) {
-					collide.trigger();
+					onCollide(b);
 					return boundY + collidePad;
 				}
 			}
@@ -284,7 +299,7 @@ Blind.camera = (function(){
 				boundY = b.y;
 				if (b.x <= x && x <= b.x+b.w &&
 					y <= boundY && boundY <= y+dy) {
-					collide.trigger();
+					onCollide(b);
 					return boundY - collidePad;
 				}
 			}
@@ -417,5 +432,6 @@ Blind.camera = (function(){
 		setAngle: setAngle,
 		update: update,
 		draw: draw,
+		setCollideAction: setCollideAction,
 	};
 })();

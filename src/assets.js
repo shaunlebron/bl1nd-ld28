@@ -47,6 +47,7 @@ Blind.assets = (function(){
 
 	var jsonSources = {
 		"map_title": "maps/title.json",
+		"map_game1": "maps/game1.json",
 	};
 
 	// Add secondary sources dependent on the primary sources listed above.
