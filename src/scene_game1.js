@@ -147,6 +147,14 @@ Blind.scene_game1 = (function(){
 
 		Blind.camera.setCollideAction('couch', function() {
 			Blind.caption.show('msg10',2);
+			script = new Blind.TimedScript([
+				{
+					time: 4,
+					action: function() {
+						Blind.setScene(Blind.scene_game2);
+					},
+				},
+			]);
 		});
 	}
 

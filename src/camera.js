@@ -235,8 +235,8 @@ Blind.camera = (function(){
 		if (collideAction) {
 			if (box.name == collideName) {
 				collideAction();
+				collideAction = null;
 			}
-			collideAction = null;
 		}
 	}
 
