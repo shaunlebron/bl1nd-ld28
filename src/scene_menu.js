@@ -209,43 +209,9 @@ Blind.scene_menu = (function(){
 		};
 	})();
 
-	var lid = (function() {
-		var value, target;
-		var factor = 0.05;
-
-		function reset() {
-			close();
-			value = target;
-		}
-
-		function update() {
-			value += (target-value)*factor;
-		}
-
-		function open() {
-			target = -Blind.canvas.height;
-		}
-		function close() {
-			target = 0;
-		}
-
-		function draw(ctx) {
-			ctx.fillStyle = "#222";
-			ctx.fillRect(0,value,Blind.canvas.width, Blind.canvas.height);
-		}
-
-		return {
-			reset: reset,
-			open: open,
-			close: close,
-			update: update,
-			draw: draw,
-		};
-	})();
-
 	function init() {
-		lid.reset();
-		lid.open();
+		Blind.lid.reset();
+		Blind.lid.open();
 
 		map = new Blind.Map(Blind.assets.json["map_title"]);
 		Blind.camera.init(map);
@@ -287,13 +253,13 @@ Blind.scene_menu = (function(){
 
 		buttons.draw(ctx);
 		shiftCaption.draw(ctx);
-		lid.draw(ctx);
+		Blind.lid.draw(ctx);
 	}
 
 	function update(dt) {
 		demo.update(dt);
 		Blind.camera.update(dt);
-		lid.update(dt);
+		Blind.lid.update(dt);
 		script.update(dt);
 		buttons.update(dt);
 		shiftCaption.update(dt);
