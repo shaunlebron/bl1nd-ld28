@@ -221,7 +221,10 @@ Blind.camera = (function(){
 	function enableMoveKeys()  { Blind.input.addKeyHandler(    moveKeyHandler); }
 	function disableMoveKeys() { Blind.input.removeKeyHandler( moveKeyHandler); }
 	function enableProjKeys()  { Blind.input.addKeyHandler(    projKeyHandler); }
-	function disableProjKeys() { Blind.input.removeKeyHandler( projKeyHandler); }
+	function disableProjKeys() {
+		Blind.input.removeKeyHandler( projKeyHandler);
+		fadeTo1D();
+	}
 
 	// ========================== COLLISION FUNCTIONS  =============================
 
