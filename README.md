@@ -1,10 +1,10 @@
 ![BL1ND](promo/bl1nd.png)
 
-This is a 1D game concept made in 48 hours for Ludum Dare 28 (Dec 13-16, 2013).
-It won first place in the [innovation
-category](http://www.ludumdare.com/compo/ludum-dare-28/?action=top&cat=Innovation).
+__BL1ND__ is a 1D concept game. It was made in 48 hours on the weekend of
+December 13, 2013 as part of the 28th Ludum Dare competition.  It won first
+place in the innovation category.
 
-- __[PLAY](http://shaunew.github.io/bl1nd-ld28)__
+- [Play it here](http://shaunew.github.io/bl1nd-ld28)
 - [Contest Entry Page](http://www.ludumdare.com/compo/ludum-dare-28/?action=preview&uid=31638)
 - [Full Version in development](http://github.com/shaunew/bl1nd)
 
