@@ -1,11 +1,12 @@
-# BL1ND
+![BL1ND](promo/bl1nd.png)
 
-This is an experimental 1D game made in 48 hours for Ludum Dare 28.  It won
-first place in the innovation category.
+This is a 1D game concept made in 48 hours for Ludum Dare 28 (Dec 13-16, 2013).
+It won first place in the [innovation
+category](http://www.ludumdare.com/compo/ludum-dare-28/?action=top&cat=Innovation).
 
-__[PLAY](http://shaunew.github.io/bl1nd-ld28) | [Contest Entry](http://www.ludumdare.com/compo/ludum-dare-28/?action=preview&uid=31638)__
-
-[![logo](promo/bl1nd.png)](http://shaunew.github.io/bl1nd-ld28)
+- __[PLAY](http://shaunew.github.io/bl1nd-ld28)__
+- [Contest Entry Page](http://www.ludumdare.com/compo/ludum-dare-28/?action=preview&uid=31638)
+- [Full Version in development](http://github.com/shaunew/bl1nd)
 
 ## Explanation
 
@@ -26,8 +27,6 @@ circle, again shown in a top-down illustration, but with more objects.
 
 ![pano](promo/pano.gif)
 
-This is the basis of my 1D game entry BL1ND.
-
 ## Goal
 
 My intention is to make an experiment to see if a person can interpret a 2D
@@ -45,7 +44,3 @@ boiler-plate code ripped from my Pterodactyl Attack engine that you can read abo
 __<http://pteroattack.com>__.
 
 The game also includes the quick map editor I made for the game.  (mapper.html)
-
-## Future
-
-You can follow the development of the full version at <http://github.com/shaunew/bl1nd>.
