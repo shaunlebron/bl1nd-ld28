@@ -4,10 +4,10 @@ __BL1ND__ is a one-dimensional concept game.  It was made in 48 hours on the
 weekend of December 13, 2013 as part of the 28th Ludum Dare competition.  It
 won first place in the innovation category.
 
-- [Play it here](http://shaunew.github.io/bl1nd-ld28)
+- [Play it here](http://shaunlebron.github.io/bl1nd-ld28)
 - [Contest Entry Page](http://www.ludumdare.com/compo/ludum-dare-28/?action=preview&uid=31638)
 - [Innovation category results](http://www.ludumdare.com/compo/ludum-dare-28/?action=top&cat=Innovation)
-- [Full Version in development](http://github.com/shaunew/bl1nd)
+- [Full Version in development](http://github.com/shaunlebron/bl1nd)
 
 ## Explanation
 
