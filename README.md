@@ -2,7 +2,7 @@
 
 This is an experimental 1D game made in 48 hours for Ludum Dare 28.
 
-[>> PLAY HERE](http://shaunew.github.io/bl1nd)
+[>> PLAY HERE](http://shaunlebron.github.io/bl1nd/)
 
 [>> LUDUM DARE ENTRY](http://www.ludumdare.com/compo/ludum-dare-28/?action=preview&uid=31638)
 
